@@ -1,0 +1,68 @@
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix nyc: <http://example.org/nyc/mayors/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+nyc:Eric_Adams a nyc:Mayor ;
+    nyc:hasTerm nyc:term_2022-01-01 ;
+    nyc:memberOf nyc:party_Republican_Party ;
+    nyc:precededBy nyc:Bill_de_Blasio ;
+    foaf:name "Eric Adams" .
+
+nyc:Rudy_Giuliani a nyc:Mayor ;
+    nyc:birthPlace nyc:place_New_York_City ;
+    nyc:hasTerm nyc:term_1994-01-01 ;
+    nyc:memberOf nyc:party_Republican_Party ;
+    nyc:succeededBy nyc:Michael_Bloomberg ;
+    foaf:name "Rudy Giuliani" .
+
+nyc:party_Democratic_Party a nyc:PoliticalParty ;
+    foaf:name "Democratic Party" .
+
+nyc:place_Boston a nyc:Location ;
+    foaf:name "Boston" .
+
+nyc:place_Manhattan a nyc:Location ;
+    foaf:name "Manhattan" .
+
+nyc:place_New_York_City a nyc:Location ;
+    foaf:name "New York City" .
+
+nyc:term_1994-01-01 a nyc:Term ;
+    nyc:termDuration 2557 ;
+    nyc:termEnd "2001-01-01"^^xsd:date ;
+    nyc:termStart "1994-01-01"^^xsd:date .
+
+nyc:term_2002-01-01 a nyc:Term ;
+    nyc:termDuration 4018 ;
+    nyc:termEnd "2013-01-01"^^xsd:date ;
+    nyc:termStart "2002-01-01"^^xsd:date .
+
+nyc:term_2014-01-01 a nyc:Term ;
+    nyc:termDuration 2557 ;
+    nyc:termEnd "2021-01-01"^^xsd:date ;
+    nyc:termStart "2014-01-01"^^xsd:date .
+
+nyc:term_2022-01-01 a nyc:Term ;
+    nyc:termDuration 0 ;
+    nyc:termEnd "2022-01-01"^^xsd:date ;
+    nyc:termStart "2022-01-01"^^xsd:date .
+
+nyc:Bill_de_Blasio a nyc:Mayor ;
+    nyc:birthPlace nyc:place_Manhattan ;
+    nyc:hasTerm nyc:term_2014-01-01 ;
+    nyc:memberOf nyc:party_Democratic_Party ;
+    nyc:precededBy nyc:Michael_Bloomberg ;
+    nyc:succeededBy nyc:Eric_Adams ;
+    foaf:name "Bill de Blasio" .
+
+nyc:Michael_Bloomberg a nyc:Mayor ;
+    nyc:birthPlace nyc:place_Boston ;
+    nyc:hasTerm nyc:term_2002-01-01 ;
+    nyc:memberOf nyc:party_Republican_Party ;
+    nyc:precededBy nyc:Rudy_Giuliani ;
+    nyc:succeededBy nyc:Bill_de_Blasio ;
+    foaf:name "Michael Bloomberg" .
+
+nyc:party_Republican_Party a nyc:PoliticalParty ;
+    foaf:name "Republican Party" .
+
