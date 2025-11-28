@@ -1,0 +1,93 @@
+# SPARQL Queries for NYC Mayors Knowledge Graph (2000-2025)
+# Each query demonstrates different SPARQL features
+
+# Query 1: Simple Triple Pattern Matching
+# Competency Question: What are the names of all mayors in the knowledge graph?
+PREFIX nyc: <http://example.org/nyc/mayors/>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT ?mayorName
+WHERE {
+  ?mayor rdf:type nyc:Mayor .
+  ?mayor foaf:name ?mayorName .
+}
+
+
+# Query 2: Filtering using Logical and Numerical Operators
+# Competency Question: Which mayors served for more than 3000 days (approximately 8 years)?
+PREFIX nyc: <http://example.org/nyc/mayors/>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+SELECT ?mayorName ?duration
+WHERE {
+  ?mayor rdf:type nyc:Mayor .
+  ?mayor foaf:name ?mayorName .
+  ?mayor nyc:hasTerm ?term .
+  ?term nyc:termDuration ?duration .
+  FILTER(?duration > 3000)
+}
+ORDER BY DESC(?duration)
+
+
+# Query 3: Using OPTIONAL
+# Competency Question: List all mayors with their birthplaces (if available)?
+PREFIX nyc: <http://example.org/nyc/mayors/>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+
+SELECT ?mayorName ?birthPlaceName
+WHERE {
+  ?mayor rdf:type nyc:Mayor .
+  ?mayor foaf:name ?mayorName .
+  OPTIONAL {
+    ?mayor nyc:birthPlace ?birthPlace .
+    ?birthPlace foaf:name ?birthPlaceName .
+  }
+}
+ORDER BY ?mayorName
+
+
+# Query 4: Aggregation (COUNT, AVG)
+# Competency Question: How many mayors belong to each political party, and what is the average term duration per party?
+PREFIX nyc: <http://example.org/nyc/mayors/>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+
+SELECT ?partyName (COUNT(?mayor) AS ?mayorCount) (AVG(?duration) AS ?avgDuration)
+WHERE {
+  ?mayor rdf:type nyc:Mayor .
+  ?mayor nyc:memberOf ?party .
+  ?party foaf:name ?partyName .
+  ?mayor nyc:hasTerm ?term .
+  ?term nyc:termDuration ?duration .
+}
+GROUP BY ?partyName
+ORDER BY DESC(?mayorCount)
+
+
+# Query 5: Graph Traversal Across 3 Hops
+# Competency Question: Find all mayors who were preceded by someone from the same political party (3-hop: mayor -> predecessor -> party <- mayor's party)?
+PREFIX nyc: <http://example.org/nyc/mayors/>
+PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+
+SELECT ?mayorName ?predecessorName ?partyName
+WHERE {
+  ?mayor rdf:type nyc:Mayor .
+  ?mayor foaf:name ?mayorName .
+  ?mayor nyc:precededBy ?predecessor .
+  ?predecessor foaf:name ?predecessorName .
+  ?mayor nyc:memberOf ?party .
+  ?predecessor nyc:memberOf ?party .
+  ?party foaf:name ?partyName .
+}
+ORDER BY ?mayorName
+
+
+# Count all the mayors
+PREFIX nyc: <http://example.org/nyc/mayors/>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT (COUNT(?mayor) AS ?totalMayors)
+WHERE {
+  ?mayor rdf:type nyc:Mayor .
+}
